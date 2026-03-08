@@ -5,143 +5,61 @@
     <meta charset='utf-8'>
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>GitHub Tracker</title>
-    <link rel="shortcut icon" href="assets/github-logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/assets/github-logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/assets/github-logo.png" type="image/x-icon">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-
+    <!-- Tailwind + DaisyUI -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="style.css">
+
+
 </head>
 
-<body class="bg-slate-200">
-    <header class="border-b bg-blue-50">
-        <div class="navbar max-w-7xl mx-auto px-4">
+<body class="bg-white flex items-center justify-center min-h-screen">
+
+    <div class="card w-96 bg-blue-50 shadow-xl p-6">
 
 
-            <div class="flex items-center gap-3 flex-1">
-
-                <img class="w-8" src="./assets/github-logo.png" alt="github logo">
-
-                <h1 class="text-lg md:text-xl font-bold">
-                    GitHub Issues Tracker
-                </h1>
-
-            </div>
-
-
-            <div class="flex items-center gap-3">
-
-
-                <input id="searchInput" type="text" placeholder="Search issues..."
-                    class="input input-bordered w-32 md:w-64" />
-
-
-                <button class="btn btn-primary btn-sm md:btn-md">
-                    New Issue
-                </button>
-
-
-
-            </div>
-
+        <div class="flex justify-center mb-4">
+            <div class="text-4xl"><img src="assets/github-logo.png" alt=""></div>
         </div>
-    </header>
-
-    <main class="z-10 max-w-[1400px] mx-auto px-6 py-8 pb-20">
-        <div>
-            <div class="flex justify-start gap-4 bg-slate-50 rounded-md p-2">
-                <button id="all-btn" class="px-4 py-2 border border-blue-400 rounded-md w-24">All</button>
-                <button id="open-btn" class="px-4 py-2 border border-blue-400 rounded-md w-24">Open</button>
-                <button id="close-btn" class="px-4 py-2 border border-blue-400 rounded-md w-24">Closed</button>
-            </div>
-
-            <div class="issue-display flex justify-between items-center bg-slate-50 p-4 my-2 rounded-lg shadow-sm">
-
-                <div class="flex items-center gap-3">
-                    <img src="assets/Aperture.png" alt="icon" class="w-12 h-12 rounded-full">
-                    <div>
-                        <h2 class="text-lg font-semibold text-gray-800"><span id="issueCount"></span> Issues</h2>
-                        <p class="text-gray-500 text-sm">Track and manage your project issues</p>
-                    </div>
-                </div>
 
 
-                <div class="flex items-center gap-6">
-                    <div class="flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full bg-green-500"></span>
-                        <span class="text-sm font-medium text-gray-700">Open</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <span class="w-3 h-3 rounded-full bg-purple-500"></span>
-                        <span class="text-sm font-medium text-gray-700">Closed</span>
-                    </div>
-                </div>
-            </div>
+        <h1 class="text-2xl font-bold text-center">Issue Tracker</h1>
+        <p class="text-center text-gray-500 mb-6">Sign in to manage your issues</p>
 
 
-            <div id="issues" class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"></div>
-
+        <div class="form-control mb-3">
+            <label class="label">
+                <span class="label-text">Username</span>
+            </label>
+            <input id="username" type="text" placeholder="Enter username"
+                class="input input-bordered bg-white text-black">
         </div>
-    </main>
 
 
-
-    <section>
-        <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
-            <div class="modal-box bg-white space-y-3 text-black">
-
-
-                <h3 id="title" class="text-xl font-bold text-black"></h3>
-
-
-                <div class="flex gap-2 items-center text-sm text-gray-700">
-                    <p id="status"></p>
-                    <span class="text-gray-500">•</span>
-                    <p id="author"></p>
-                    <span class="text-gray-500">•</span>
-                    <p id="date"></p>
-                </div>
+        <div class="form-control mb-4">
+            <label class="label">
+                <span class="label-text">Password</span>
+            </label>
+            <input id="password" type="password" placeholder="Enter password"
+                class="input input-bordered bg-white text-black">
+        </div>
 
 
-                <div id="label" class="flex gap-2 flex-wrap"></div>
+        <button id="login-btn" class="btn btn-primary w-full">Sign In</button>
 
+        <p class="text-center text-sm text-gray-400 mt-4">
+            Default: <span class="font-semibold">admin / admin123</span>
+        </p>
 
-                <p id="description" class="py-3 text-gray-800 leading-relaxed"></p>
-
-
-                <div class="flex justify-between p-4 border border-gray-200 rounded-md">
-
-                    <div class="flex flex-col flex-1">
-                        <p class="font-semibold text-gray-700">Assignee</p>
-                        <p id="assignee" class="text-black"></p>
-                    </div>
-
-                    <div class="flex flex-col flex-1">
-                        <p class="font-semibold text-gray-700">Priority</p>
-                        <p id="priority" class="text-black"></p>
-                    </div>
-
-                </div>
-
-
-                <div class="modal-action">
-                    <form method="dialog">
-                        <button class="btn btn-primary">Close</button>
-                    </form>
-                </div>
-
-            </div>
-        </dialog>
-
-    </section>
-
+    </div>
     <script>
 
 
     </script>
 
-
-    <script src="index.js"></script>
+    <script src="login.js"></script>
 </body>
 
 </html>
