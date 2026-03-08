@@ -6,12 +6,11 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>GitHub Tracker</title>
     <link rel="shortcut icon" href="/assets/github-logo.png" type="image/x-icon">
-    <link rel="shortcut icon" href="/assets/github-logo.png" type="image/x-icon">
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
     <script src='main.js'></script>
 
-    <!-- Tailwind + DaisyUI -->
+
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -20,7 +19,7 @@
     <header class="border-b bg-blue-50">
         <div class="navbar max-w-7xl mx-auto px-4">
 
-            <!-- Left Section -->
+
             <div class="flex items-center gap-3 flex-1">
 
                 <img class="w-8" src="./assets/github-logo.png" alt="github logo">
@@ -31,13 +30,14 @@
 
             </div>
 
-            <!-- Right Section -->
+
             <div class="flex items-center gap-3">
 
-                <!-- Search -->
-                <input type="text" placeholder="Search issues..." class="input input-bordered w-32 md:w-64" />
 
-                <!-- New Issue Button -->
+                <input id="searchInput" type="text" placeholder="Search issues..."
+                    class="input input-bordered w-32 md:w-64" />
+
+
                 <button class="btn btn-primary btn-sm md:btn-md">
                     New Issue
                 </button>
@@ -48,26 +48,26 @@
 
         </div>
     </header>
-    <!-- main section  -->
+
     <main class="z-10 max-w-[1400px] mx-auto px-6 py-8 pb-20">
         <div>
             <div class="flex justify-start gap-4 bg-slate-50 rounded-md p-2">
-                <button class="px-4 py-2 border border-blue-400 rounded-md w-24">All</button>
-                <button class="px-4 py-2 border border-blue-400 rounded-md w-24">Open</button>
-                <button class="px-4 py-2 border border-blue-400 rounded-md w-24">Closed</button>
+                <button id="all-btn" class="px-4 py-2 border border-blue-400 rounded-md w-24">All</button>
+                <button id="open-btn" class="px-4 py-2 border border-blue-400 rounded-md w-24">Open</button>
+                <button id="close-btn" class="px-4 py-2 border border-blue-400 rounded-md w-24">Closed</button>
             </div>
-            <!-- display  -->
+
             <div class="issue-display flex justify-between items-center bg-slate-50 p-4 my-2 rounded-lg shadow-sm">
-                <!-- Left side -->
+
                 <div class="flex items-center gap-3">
                     <img src="assets/Aperture.png" alt="icon" class="w-12 h-12 rounded-full">
                     <div>
-                        <h2 class="text-lg font-semibold text-gray-800">50 Issues</h2>
+                        <h2 class="text-lg font-semibold text-gray-800"><span id="issueCount"></span> Issues</h2>
                         <p class="text-gray-500 text-sm">Track and manage your project issues</p>
                     </div>
                 </div>
 
-                <!-- Right side (status indicators) -->
+
                 <div class="flex items-center gap-6">
                     <div class="flex items-center gap-2">
                         <span class="w-3 h-3 rounded-full bg-green-500"></span>
@@ -80,69 +80,66 @@
                 </div>
             </div>
 
-            <!-- card container -->
+
             <div id="issues" class="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4"></div>
-
-
-            <!-- Cards area -->
-            <div id="cardsArea" class="p-5">
-                <!-- Spinner (initial) -->
-                <div class="flex flex-col items-center justify-center py-20 gap-4">
-                    <div class="w-10 h-10 rounded-full border-[3px] border-bdr border-t-green animate-spin-slow"></div>
-                    <p class="text-sm text-muted">Loading issues…</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="flex justify-between">
-            <img src="/assets/Open-Status.png" alt="">
-            <h2>High</h2>
 
         </div>
     </main>
-    <script>
-        async function loadIssues() {
-            try {
-                const res = await fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues');
-                const data = await res.json();
-                renderCards(data.data);
-            } catch (err) {
-                console.error(err);
-                document.getElementById('issues').innerText = "Failed to load issues.";
-            }
-        }
 
-        function renderCards(list) {
-            const container = document.getElementById('issues');
-            container.innerHTML = '';
-            list.forEach(item => {
 
-                const borderColor = item.status === 'open'
-                    ? 'border-t-4 border-[#00A96E]'
-                    : 'border-t-4 border-[#A855F7   ]';
 
-                const html = `
-                            <div class="bg-white rounded-xl shadow p-4 ${borderColor}">
-                            <div class="flex justify-between">
-                            <img src="/assets/Open-Status.png" alt="">
-                            <h2 class=" bg-red-100 rounded-md font-semibold p-1">${item.priority.toUpperCase()} </h2>
+    <section>
+        <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box bg-white space-y-3 text-black">
 
-                    </div>
-                    <h3 class="text-lg font-semibold mb-2">${item.title}</h3>
-                    <p class="text-gray-600 mb-3">${item.description}</p>
-                    <div class="flex flex-wrap gap-2 mb-3">
-                    ${(item.labels || []).map(l => `<span class="text-xs py-1 px-2 rounded-full bg-yellow-100 text-yellow-800">${l}</span>`).join('')}
-                    </div>
-                    <p class="text-sm text-gray-400">#${item.id} — by ${item.author || 'Unknown'}</p>
-                    <p> ${item.createdAt}</p>
+
+                <h3 id="title" class="text-xl font-bold text-black"></h3>
+
+
+                <div class="flex gap-2 items-center text-sm text-gray-700">
+                    <p id="status"></p>
+                    <span class="text-gray-500">•</span>
+                    <p id="author"></p>
+                    <span class="text-gray-500">•</span>
+                    <p id="date"></p>
                 </div>
-                `;
-                container.insertAdjacentHTML('beforeend', html);
 
-            });
-        }
 
-        loadIssues();
+                <div id="label" class="flex gap-2 flex-wrap"></div>
+
+
+                <p id="description" class="py-3 text-gray-800 leading-relaxed"></p>
+
+
+                <div class="flex justify-between p-4 border border-gray-200 rounded-md">
+
+                    <div class="flex flex-col flex-1">
+                        <p class="font-semibold text-gray-700">Assignee</p>
+                        <p id="assignee" class="text-black"></p>
+                    </div>
+
+                    <div class="flex flex-col flex-1">
+                        <p class="font-semibold text-gray-700">Priority</p>
+                        <p id="priority" class="text-black"></p>
+                    </div>
+
+                </div>
+
+
+                <div class="modal-action">
+                    <form method="dialog">
+                        <button class="btn btn-primary">Close</button>
+                    </form>
+                </div>
+
+            </div>
+        </dialog>
+
+    </section>
+
+    <script>
+
+
     </script>
 
 
