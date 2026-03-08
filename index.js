@@ -136,8 +136,8 @@ function renderCards(list) {
 
 
         const statusImg = item.status === 'open'
-            ? '/assets/Open-Status.png'
-            : '/assets/Closed_Status.png';
+            ? 'assets/Open-Status.png'
+            : 'assets/Closed_Status.png';
 
         let priorityBg = '';
         if (item.priority === 'high') priorityBg = 'bg-red-100 text-red-800';
